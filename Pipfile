@@ -7,7 +7,8 @@ name = "pypi"
 python_version = "3.11"
 
 [packages]
-torch = "*"
+beautifulsoup4 = "*"
+torch = {version = "*", index = "https://download.pytorch.org/whl/cu118"}
 transformers = "*"
 fastapi = "*"
 pydantic = "*"
