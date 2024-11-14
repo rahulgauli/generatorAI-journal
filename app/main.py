@@ -1,12 +1,10 @@
-from functools import lru_cache
 import json
 import os
 import asyncio
-import requests
 import datetime
 from app.myAIjournalist import AIJournalist
-from .schema import validated_locations, NewsSettings, CNNNewsResponse
-from moviepy.video.io.VideoFileClip import VideoFileClip
+from .schema import CNNNewsResponse
+# from moviepy.video.io.VideoFileClip import VideoFileClip
 
 
 today_date = datetime.datetime.now().date()
@@ -16,6 +14,7 @@ folder_path = f"{today_date}"
 async def _news_clip_geneartor():
     try:
         if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
             await AIJournalist.get_cnn_news_input("CNN")    
         today_date = datetime.datetime.now().date()
         clip_content = {}
