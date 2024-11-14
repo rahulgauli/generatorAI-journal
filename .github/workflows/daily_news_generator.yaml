@@ -1,0 +1,33 @@
+name: Get Archer data workflow
+on:   
+  workflow_dispatch:
+
+permissions:
+      id-token: write
+      contents: read  
+jobs:
+  run-news-generator:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+     
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python3.10 -m pip install --upgrade pip \
+          && python3.10 -m pip install pipenv \
+          && pipenv install --system \
+          && python3.10 -m pip freeze
+
+      - name: Run Python script
+        env:
+            cnn: ${{ secrets.CNN }}
+        run: |
+          pipenv install 
+          pipenv install --dev
+          pipenv run python -m app.main
