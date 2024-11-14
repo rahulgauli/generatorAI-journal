@@ -1,6 +1,8 @@
 import os
 import asyncio
 import requests
+
+from app.myAIjournalist import AIJournalist
 from .schema import validated_locations, NewsSettings, CNNNewsResponse
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
@@ -30,6 +32,17 @@ async def _news_clip_geneartor():
     try:
         clip_content = {}
         response = await get_cnn_news_input("CNN")
+        for a_news in response.articles:
+            clip_content = {
+                "description": a_news['description'],
+                "url": a_news['url'],
+                "urlToImage": a_news['urlToImage'],
+                "publishedAt": a_news['publishedAt'],
+                "content": a_news['content']
+            }
+        
+            summazied_content = await AIJournalist.summarized_content(clip_content)
+            print(summazied_content)
     except Exception as e:
         print(e)
         raise 

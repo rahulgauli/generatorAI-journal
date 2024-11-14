@@ -7,6 +7,8 @@ name = "pypi"
 python_version = "3.11"
 
 [packages]
+torch = "*"
+transformers = "*"
 fastapi = "*"
 pydantic = "*"
 pydantic-settings = "*"
