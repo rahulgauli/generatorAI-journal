@@ -1,5 +1,7 @@
 name: Get Archer data workflow
-on:   
+on:
+  schedule:
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions:
