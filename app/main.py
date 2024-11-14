@@ -9,7 +9,7 @@ from .schema import CNNNewsResponse
 
 
 today_date = datetime.datetime.now().date()
-folder_path = f"{today_date}"
+folder_path = f"dailyAInews/{today_date}"
 
 
 async def _news_clip_geneartor():
@@ -21,7 +21,7 @@ async def _news_clip_geneartor():
             await AIJournalist.get_cnn_news_input("CNN")    
         today_date = datetime.datetime.now().date()
         clip_content = {}
-        with open(f"{today_date}/cnn_news.json", "r") as f:
+        with open(f"dailyAInews/{today_date}/cnn_news.json", "r") as f:
             clip_content = f.read()
         json_data = json.loads(clip_content)
         json_clip_content = CNNNewsResponse(**json_data)
