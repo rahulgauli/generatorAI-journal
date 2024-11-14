@@ -1,3 +1,5 @@
+from functools import lru_cache
+import json
 import os
 import asyncio
 import requests
@@ -25,14 +27,20 @@ async def get_cnn_news_input(news_channel):
     url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={settings.cnn}"
     resposne = requests.get(url)
     valid_new_response = CNNNewsResponse(**resposne.json())
+    with open("cnn_news.json", "w") as f:
+        f.write(resposne.text)
+        f.close()
     return valid_new_response
 
 
 async def _news_clip_geneartor():
     try:
         clip_content = {}
-        response = await get_cnn_news_input("CNN")
-        for a_news in response.articles:
+        with open("cnn_news.json", "r") as f:
+            clip_content = f.read()
+        json_data = json.loads(clip_content)
+        json_clip_content = CNNNewsResponse(**json_data)
+        for a_news in json_clip_content.articles:
             clip_content = {
                 "description": a_news['description'],
                 "url": a_news['url'],
@@ -40,7 +48,8 @@ async def _news_clip_geneartor():
                 "publishedAt": a_news['publishedAt'],
                 "content": a_news['content']
             }
-        
+            print(clip_content)
+            print("&&&&&&&&&&&&&&&&&now senidng to AIJournalist")
             summazied_content = await AIJournalist.summarized_content(clip_content)
             print(summazied_content)
     except Exception as e:
