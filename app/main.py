@@ -2,6 +2,7 @@ import json
 import os
 import asyncio
 import datetime
+from .ai_audio_generator import ai_audio_generator_
 from app.myAIjournalist import AIJournalist
 from .schema import CNNNewsResponse
 # from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -13,6 +14,8 @@ folder_path = f"{today_date}"
 
 async def _news_clip_geneartor():
     try:
+    
+        cnn_news_audio = ""
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
             await AIJournalist.get_cnn_news_input("CNN")    
@@ -33,12 +36,15 @@ async def _news_clip_geneartor():
             }
             print("&&&&&&&&&&&&&&&&&now senidng to AIJournalist")
             summazied_content = await AIJournalist.summarized_content(clip_content)
-            print(summazied_content)
+            after_every_summarized_content_add_a_long_pause = "............"
+            cnn_news_audio += after_every_summarized_content_add_a_long_pause
+            cnn_news_audio += summazied_content
+        return cnn_news_audio
     except Exception as e:
         print(e)
         raise 
 
 
-asyncio.run(_news_clip_geneartor())
-
+response = asyncio.run(_news_clip_geneartor())
+asyncio.run(ai_audio_generator_(response))
 

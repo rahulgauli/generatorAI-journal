@@ -3,7 +3,7 @@ import datetime
 from bs4 import BeautifulSoup
 from transformers import pipeline
 from app.schema import CNNNewsResponse, NewsSettings
-
+# from melo.api im?port TTS
 
 class AIJournalist:
 
@@ -39,4 +39,4 @@ class AIJournalist:
                             )
         content_from_url = await AIJournalist.get_article_content_from_url(content['url'])
         response = summarizer(content_from_url)
-        return response
+        return response[0]['summary_text']
