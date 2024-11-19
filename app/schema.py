@@ -16,7 +16,7 @@ class ArticleResponse(BaseModel):
     urlToImage: str
     publishedAt: str
     content: str
-    
+
 
 class CNNNewsResponse(BaseModel):
     status: str
@@ -25,9 +25,7 @@ class CNNNewsResponse(BaseModel):
 
 class NewsSettings(BaseSettings):
     cnn: str
-
-    class config:
-        env_prefix = ".env"
+    
 
 
 class Location(BaseModel):

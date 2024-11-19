@@ -9,15 +9,17 @@ class AIJournalist:
 
 
     @staticmethod
-    async def get_cnn_news_input(news_channel):
-        todays_date = datetime.datetime.now().date()
+    async def get_cnn_news_input(news_channel, json_file):
         settings = NewsSettings()
+        print("&&&&&&&&&&&&&&&&&now senidng to AIJournalist")
+        print(settings.cnn)
         url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={settings.cnn}"
+
         resposne = requests.get(url)
+        print(resposne.json())
         valid_new_response = CNNNewsResponse(**resposne.json())
-        with open(f"{todays_date}/cnn_news.json", "w") as f:
-            f.write(resposne.text)
-            f.close()
+        json_file.write(resposne.text)
+        json_file.close()
         return valid_new_response
 
 
@@ -37,6 +39,7 @@ class AIJournalist:
                             framework="pt",
                             device=0
                             )
+            
         content_from_url = await AIJournalist.get_article_content_from_url(content['url'])
         response = summarizer(content_from_url)
         return response[0]['summary_text']

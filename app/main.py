@@ -16,16 +16,18 @@ async def _news_clip_geneartor():
     try:
     
         cnn_news_audio = ""
+        
         if not os.path.exists(folder_path):
+            print("Creating folder")
             os.makedirs(folder_path)
-            await AIJournalist.get_cnn_news_input("CNN")    
-        today_date = datetime.datetime.now().date()
+        
+            with open(f"{folder_path}/cnn_news.json", "w") as json_file:
+                json.dump({}, json_file)
+                response = await AIJournalist.get_cnn_news_input("CNN", json_file)    
+        
         clip_content = {}
-        with open(f"dailyAInews/{today_date}/cnn_news.json", "r") as f:
-            clip_content = f.read()
-        json_data = json.loads(clip_content)
-        json_clip_content = CNNNewsResponse(**json_data)
-        for a_news in json_clip_content.articles:
+
+        for a_news in response.articles:
             clip_content = {
                 "title": a_news['title'],
                 "description": a_news['description'],
@@ -34,9 +36,10 @@ async def _news_clip_geneartor():
                 "publishedAt": a_news['publishedAt'],
                 "content": a_news['content']
             }
-            print("&&&&&&&&&&&&&&&&&now senidng to AIJournalist")
+            print("&&&&&&&&&&&&&&&&&now senidng to AIJournalist&&&&&&&&&&&&&&&&&&&&&")
+        async with asyncio.timeout(20):
             summazied_content = await AIJournalist.summarized_content(clip_content)
-            after_every_summarized_content_add_a_long_pause = "............"
+            after_every_summarized_content_add_a_long_pause = "..."
             cnn_news_audio += after_every_summarized_content_add_a_long_pause
             cnn_news_audio += summazied_content
         return cnn_news_audio
@@ -45,6 +48,6 @@ async def _news_clip_geneartor():
         raise 
 
 
-response = asyncio.run(_news_clip_geneartor())
-asyncio.run(ai_audio_generator_(response))
-
+if __name__ == "__main__":
+    response = asyncio.run(_news_clip_geneartor())
+    asyncio.run(ai_audio_generator_(response, folder_path))

@@ -4,12 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [requires]
-python_version = "3.11"
+python_version = "3.8"
 
 [packages]
 melo = "*"
 beautifulsoup4 = "*"
-torch = {version = "*", index = "https://download.pytorch.org/whl/cu118"}
 transformers = "*"
 fastapi = "*"
 pydantic = "*"
@@ -18,5 +17,9 @@ boto3 = "*"
 awscli = "*"
 moviepy = "*"
 ffmpeg-python = "*"
+torch = "*"
+uv = "*"
+sentencepiece = "*"
+diffusers = {git = "https://github.com/huggingface/diffusers.git"}
 
 [dev-packages]
