@@ -15,3 +15,4 @@ pipenv install
 pipenv install --dev
 pipenv run python3 -m app.main
 ```
+CNN=33a9c0f6166943b0976254affe94213f
