@@ -1,5 +1,4 @@
 # GeneratorAI - 
-Uses large language models to develop video clips using daily news.
 
 #### Pre-req:
 - Python 3.11
