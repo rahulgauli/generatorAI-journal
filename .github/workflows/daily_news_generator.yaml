@@ -32,4 +32,4 @@ jobs:
         run: |
           pipenv install 
           pipenv install --dev
-          pipenv run python -m app.main
+          pipenv run python3 -m app.main
