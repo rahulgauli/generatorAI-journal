@@ -4,9 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-numpy = "*"
-
-[dev-packages]
+torch = "*"
+torchvision = "*"
+torchaudio = "*"
+beautifulsoup4 = "*"
+serpapi = "*"
+transformers = "*"
+pydantic = "*"
+pydantic-settings = "*"
+diffusers = "*"
+melo = "*"
+tts = "*"
+gtts = "*"
 
 [requires]
-python_version = "3.13"
+python_version = "3.11"
+
+[dev-packages]

@@ -1,34 +1,16 @@
-# import torch
-# from diffusers import MochiPipeline
-# from diffusers.utils import export_to_video
-# # from melo.api import TTS
+from gtts import gTTS 
 
 
-# speed = 1.0
+async def collect_speech_from__speech_dict(_speech_dict):
+    final_speech = ""
+    for key,value in _speech_dict.items():
+        final_speech += value["speech"]
+    return final_speech
 
 
-# async def ai_audio_generator_(_speech, _news_clip_path):
-#     device = 'auto'
-#     model = TTS(language='EN', device=device)
-#     speaker_ids = model.hps.data.spk2id
-#     output_path = 'en-us.wav'
-#     model.tts_to_file(_speech, speaker_ids['EN-US'], output_path, speed=speed)
-#     return "audio generated thank you"
-
-
-    # print(output)
-
-    # pipe = MochiPipeline.from_pretrained("genmo/mochi-1-preview", torch_dtype=torch.bfloat16
-    #                                      )
-    # pipe.enable_model_cpu_offload()
-    # pipe.enable_vae_tiling()
-    # frames = pipe("guitarist in nature enjoying the natural green view", 
-    #               num_inference_steps=28, guidance_scale=3.5).frames[0]
-
-    # export_to_video(frames, "mochi.mp4")
-
-# import asyncio
-
-# if __name__ == "__main__":
-#     response = asyncio.run(ai_audio_generator_("response", "folder_path"))
-#     #print(response)
+async def ai_audio_generator_(_speech, _news_clip_path):
+    final_speech = await collect_speech_from__speech_dict(_speech)
+    output_path = f"audio/{_news_clip_path}1234-audio.mp3" 
+    tts = gTTS(text=final_speech, lang='en')
+    tts.save(output_path)
+    return "audio generated thank you"

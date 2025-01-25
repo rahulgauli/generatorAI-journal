@@ -2,7 +2,7 @@ import json
 import os
 import asyncio
 import datetime
-# from .ai_audio_generator import ai_audio_generator_
+from .ai_audio_generator import ai_audio_generator_
 from app.myAIjournalist import AIJournalist
 from .schema import CNNNewsResponse
 # from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -37,6 +37,9 @@ async def _news_clip_geneartor():
         index = 0
         for a_trend in _trends['trending_searches']:    
             try:
+                # print(a_trend)
+                if a_trend["search_volume"] > 500:
+                    trends.append(a_trend["query"])
                 trendy_words_for_single_trend_breakdown = await get_unique_words(a_trend["trend_breakdown"])
                 if trendy_words_for_single_trend_breakdown:
                     for a_trendy_word in trendy_words_for_single_trend_breakdown:
@@ -44,6 +47,7 @@ async def _news_clip_geneartor():
                     index += 1
             except KeyError:
                 pass
+        print(trends)
         article_index=0
         for a_news in _news.articles:
             if a_news["title"] and a_news["description"]:
@@ -54,11 +58,10 @@ async def _news_clip_geneartor():
                                                       "hashtags": words_to_select
                                                       }
                     article_index += 1
-            
-            title = a_news['title'].split(" ")
-            description = a_news['description'].split(" ")
-            full_list_of_words = title + description
-            match = await validate_if_trendy_words_in_news(full_list_of_words, trends)
+                    title = a_news['title'].split(" ")
+                    description = a_news['description'].split(" ")
+                    full_list_of_words = title + description
+                    match = await validate_if_trendy_words_in_news(full_list_of_words, trends)
         return cnn_news_audios
     except Exception as e:
         print(e)
@@ -67,8 +70,9 @@ async def _news_clip_geneartor():
 
 if __name__ == "__main__":
     response = asyncio.run(_news_clip_geneartor())
+    assert len(response) > 0
     date = datetime.datetime.now().strftime("%Y-%m-%d")
+    folder_path = f"speech_for_{date}"
     with open(f"speech_for_{date}.json", "w") as f:
         f.write(json.dumps(response))
-    print(response)
-    # asyncio.run(ai_audio_generator_(response, folder_path))
+    asyncio.run(ai_audio_generator_(response, folder_path))
